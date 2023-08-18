@@ -1,4 +1,4 @@
-const light = {
+export const light = {
 	name: 'light-theme',
 	colors: {
 		header: 'hsl(0, 0%, 93%)',
@@ -13,7 +13,7 @@ const light = {
 	},
 }
 
-const dark = {
+export const dark = {
 	name: 'dark-theme',
 	colors: {
 		header: 'hsl(0, 0%, 20%)',
@@ -28,7 +28,7 @@ const dark = {
 	},
 }
 
-const blue = {
+export const blue = {
 	name: 'blue-theme',
 	colors: {
 		header: 'hsl(195, 53%, 79%)',
@@ -43,7 +43,7 @@ const blue = {
 	},
 }
 
-const green = {
+export const green = {
 	name: 'green-theme',
 	colors: {
 		header: 'hsl(150, 80%, 15%)',
@@ -58,7 +58,7 @@ const green = {
 	},
 }
 
-const brown = {
+export const brown = {
 	name: 'brown-theme',
 	colors: {
 		header: 'hsl(39, 70%, 50%)',
@@ -73,7 +73,7 @@ const brown = {
 	},
 }
 
-const pink = {
+export const pink = {
 	name: 'pink-theme',
 	colors: {
 		header: 'hsl(350, 100%, 88%)',
@@ -87,5 +87,3 @@ const pink = {
 		border: 'hsl(300, 50%, 58%)',
 	},
 }
-
-export { light, dark, blue, green, brown, pink }

@@ -1,8 +1,7 @@
 import { createGlobalStyle } from 'styled-components'
-
 import * as theme from './Theme.styled.jsx'
 
-const GlobalStyles = createGlobalStyle`
+export const GlobalStyles = createGlobalStyle`
 *,
 *::before,
 *::after {
@@ -41,5 +40,3 @@ body {
     border: 3px solid ${({ theme }) => theme.colors.border};
     }
 `
-
-export { GlobalStyles }

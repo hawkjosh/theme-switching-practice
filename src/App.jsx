@@ -1,25 +1,38 @@
 import { useEffect, useState } from 'react'
+import styled, { ThemeProvider } from 'styled-components'
+import { GlobalStyles } from './styles/Global.jsx'
+import * as theme from './styles/Theme.styled.jsx'
+import { Cards } from './components/Cards.jsx'
 
-import { ThemeProvider } from 'styled-components'
-import {
-	light,
-	dark,
-	blue,
-	green,
-	brown,
-	pink,
-} from './components/styles/Theme.styled.jsx'
-import { GlobalStyles } from './components/styles/Global.jsx'
-import { Header } from './components/styles/Header.styled.jsx'
-import { Footer } from './components/styles/Footer.styled.jsx'
-import { Quotes } from './components/Quotes.jsx'
-import {
-	ThemeContainer,
-	ThemeButton,
-} from './components/styles/ThemeSwitching.styled.jsx'
+const buttons = [
+	{
+		name: 'light',
+		theme: theme.light,
+	},
+	{
+		name: 'dark',
+		theme: theme.dark,
+	},
+	{
+		name: 'blue',
+		theme: theme.blue,
+	},
+	{
+		name: 'green',
+		theme: theme.green,
+	},
+	{
+		name: 'brown',
+		theme: theme.brown,
+	},
+	{
+		name: 'pink',
+		theme: theme.pink,
+	},
+]
 
 export const App = () => {
-	const [selectedTheme, setSelectedTheme] = useState(light)
+	const [selectedTheme, setSelectedTheme] = useState(theme.light)
 
 	useEffect(() => {
 		const currentTheme = JSON.parse(localStorage.getItem('current-theme'))
@@ -33,67 +46,100 @@ export const App = () => {
 		localStorage.setItem('current-theme', JSON.stringify(theme))
 	}
 
+	// Change the background and footer properties to invert colors
 	const invertedSelectedTheme = ({ colors }) => ({
 		colors: {
-			background: colors.footer,
-			footer: colors.background,
+			background: colors.background,
+			footer: colors.footer,
 		},
 	})
 
 	return (
 		<ThemeProvider theme={selectedTheme}>
-			<div className='App'>
-				<GlobalStyles />
-				<Header>Game of Thrones Quotes</Header>
+			<GlobalStyles />
+			<Main>
+				<Header>
+					<Title>Game of Thrones Quotes</Title>
+					<Container>
+						{buttons.map((btn, index) => (
+							<Button
+								key={index}
+								className={`${btn.name} ${
+									selectedTheme === btn.theme ? 'active' : ''
+								}`}
+								onClick={() => handleThemeChange(btn.theme)}
+							/>
+						))}
+					</Container>
+				</Header>
 
-				<ThemeContainer>
-					<span>Themes: </span>
-					<ThemeButton
-						className={`light ${selectedTheme === light ? 'active' : ''}`}
-						onClick={() => handleThemeChange(light)}></ThemeButton>
-					<ThemeButton
-						className={`dark ${selectedTheme === dark ? 'active' : ''}`}
-						onClick={() => handleThemeChange(dark)}></ThemeButton>
-					<ThemeButton
-						className={`blue ${selectedTheme === blue ? 'active' : ''}`}
-						onClick={() => handleThemeChange(blue)}></ThemeButton>
-					<ThemeButton
-						className={`green ${selectedTheme === green ? 'active' : ''}`}
-						onClick={() => handleThemeChange(green)}></ThemeButton>
-					<ThemeButton
-						className={`brown ${selectedTheme === brown ? 'active' : ''}`}
-						onClick={() => handleThemeChange(brown)}></ThemeButton>
-					<ThemeButton
-						className={`pink ${selectedTheme === pink ? 'active' : ''}`}
-						onClick={() => handleThemeChange(pink)}></ThemeButton>{' '}
-				</ThemeContainer>
-
-				<ThemeProvider theme={pink}>
-					<Quotes />
+				<ThemeProvider theme={selectedTheme}>
+					<Cards />
 				</ThemeProvider>
 
-				<Footer
-					// theme={{
-					// 	colors: {
-					// 		background: 'hsl(37, 83%, 54%)',
-					// 		footer: 'hsl(39, 50%, 20%)',
-					// 	},
-					// }}
-					>
-					<p>
-						Awesome content created by{' '}
-						<a href='https://www.hawkjosh.com/'>hawkjosh</a>
-					</p>
-				</Footer>
 				<ThemeProvider theme={invertedSelectedTheme}>
 					<Footer>
-						<p>
-							Awesome content created by{' '}
-							<a href='https://www.hawkjosh.com/'>hawkjosh</a>
-						</p>
+						Awesome content created by{' '}
+						<a href='https://www.hawkjosh.com/'>hawkjosh</a>
 					</Footer>
 				</ThemeProvider>
-			</div>
+			</Main>
 		</ThemeProvider>
 	)
 }
+
+const Main = styled.main`
+	height: 100dvh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+`
+
+const Header = styled.header`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1.5rem;
+	background-color: ${({ theme }) => theme.colors.header};
+	padding: 20px;
+`
+
+const Title = styled.h1`
+	color: ${({ theme }) => theme.colors.text};
+	text-align: center;
+	font-weight: bold;
+`
+
+const Container = styled.div`
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+`
+
+const Button = styled.button`
+	margin: 0 5px;
+	padding: 10px;
+	font-size: 0.5rem;
+	border: 1px solid ${({ theme }) => theme.colors.border};
+	border-radius: 5px;
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+
+	&:hover {
+		box-shadow: 2px 2px 2px ${({ theme }) => theme.colors.border};
+	}
+`
+
+const Footer = styled.footer`
+	background-color: ${({ theme }) => theme.colors.footer};
+	padding: 40px 20px;
+	text-align: center;
+	color: ${({ theme }) => theme.colors.background};
+
+	& a {
+		color: ${({ theme }) => theme.colors.background};
+	}
+`
